@@ -614,6 +614,46 @@ void CKKS_embedInSlots(zzX& f,
   normalize(f);
 }
 
+    void CKKS_embedInSlots(NTL::ZZX& f,
+                           const std::vector<cx_double>& v,
+                           const PAlgebra& palg,
+                           double scaling)
+
+    {
+        HELIB_TIMER_START;
+
+        long v_sz = v.size();
+        long m = palg.getM();
+
+        if (!(palg.getP() == -1 && palg.getPow2() >= 2))
+            throw LogicError("bad args to CKKS_canonicalEmbedding");
+
+        std::vector<cx_double> buf(m / 2, cx_double(0));
+        for (long i : range(m / 4)) {
+            long j = palg.ith_rep(i);
+            long ii = m / 4 - i - 1;
+            if (ii < v_sz) {
+                buf[j >> 1] = std::conj(v[ii]);
+                buf[(m - j) >> 1] = v[ii];
+            }
+        }
+
+        const half_FFT& hfft = palg.getHalfFFTInfo();
+        const cx_double* pow = &hfft.pow[0];
+
+        scaling /= (m / 2);
+        // This is becuase DFT^{-1} = 1/(m/2) times a DFT matrix for conj(V)
+
+        hfft.fft.apply(&buf[0]);
+        f.SetLength(m / 2);
+        for (long i : range(m / 2)) {
+            double f_i = std::round(MUL(buf[i], pow[i]).real() * scaling);
+            NTL::conv(f[i], f_i);
+        }
+
+        f.normalize();
+    }
+
 // === obsolete versions of canonical embedding and inverse ===
 
 // These are less efficient, and seem to have some logic errors.

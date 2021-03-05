@@ -295,6 +295,12 @@ private:
   explicit SecKey(const PubKey& pk);
 
 public:
+    /**
+     * make sk public
+     * */
+    DoubleCRT& getSK(){
+        return sKeys[0];
+    }
   /**
    * @brief Class label to be added to JSON serialization as object type
    * information.

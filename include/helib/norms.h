@@ -123,6 +123,16 @@ void CKKS_embedInSlots(zzX& f,
                        const PAlgebra& palg,
                        double scaling);
 
+
+/**
+ * This function is not in the original library
+ * it is added to handle the possible overflow when encoding into a vector of long
+ * NOTE: when overflow happens, the truncation error in decoding itself is enough to cause recovery failure
+ * */
+void CKKS_embedInSlots(NTL::ZZX& f,
+                       const std::vector<cx_double>& v,
+                       const PAlgebra& palg,
+                       double scaling);
 } // namespace helib
 
 #endif // ifndef HELIB_NORMS_H

@@ -38,3 +38,29 @@ src/*.txt
 
 /html/
 /latex/
+
+# Build and install files
+CMakeFiles/
+CTestTestfile.cmake
+Makefile
+Testing/
+bin/
+cmake_install.cmake
+install_manifest.txt
+lib/
+src/CMakeFiles/
+src/CTestTestfile.cmake
+src/cmake_install.cmake
+src/googletest-build/
+src/googletest-download/
+src/googletest-src/
+src/helib/
+src/helibConfig.cmake
+src/helibConfigVersion.cmake
+src/tests/
+src/version.cpp
+test_resources/
+xunit_test_result/
+
+# git files
+*.patch

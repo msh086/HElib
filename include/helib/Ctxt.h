@@ -527,6 +527,14 @@ public:
   //! on the L-infty norm of the canonical embedding
   void DummyEncrypt(const NTL::ZZX& ptxt, double size = -1.0);
 
+  /**
+   * Access ciphertext parts
+   * NOTE: this is not in the original library, it's added to perform CKKS attack
+   * */
+  DoubleCRT& operator[](size_t idx){
+      return parts[idx];
+  }
+
   Ctxt& operator=(const Ctxt& other)
   { // public assignment operator
     assertEq(&context,
